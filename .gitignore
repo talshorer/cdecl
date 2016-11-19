@@ -2,4 +2,4 @@ cdecl
 *~
 *.output
 *.tab.*
-lex.yy.c
+*.yy.c

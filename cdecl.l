@@ -1,6 +1,6 @@
 %{
+#include "cdecl.h"
 #include "cdecl.tab.h"
-#include <stdlib.h>
 extern void yyerror(char *);
 %}
 
@@ -16,11 +16,13 @@ extern void yyerror(char *);
 				return IDENT;
 			}
 
-[\[\]*()\n]	return *yytext;
+[\[\]*()\n]	{
+			char v = *yytext;
+			*yytext = 0;
+			return v;
+		}
 
-[ \t]	{
-		*yytext = 0; /* terminate identifiers */
-	}
+[ \t]	*yytext = 0; /* terminate identifiers */
 
 %%
 
