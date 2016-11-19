@@ -20,6 +20,7 @@ extern void yyerror(char *);
 %right '*' '[' '('
 %left ','
 
+%type <node> request;
 %type <node> decl;
 %type <node> ptr;
 %type <node> arr;
@@ -30,22 +31,19 @@ extern void yyerror(char *);
 
 request
 	  : request IDENT decl '\n' {
-		struct node *node = cdecl_create_node();
-
-		node->type = NODE_DECLARATION;
-		node->declaration.type = $2;
-		node->declaration.prev = $3;
-		cdecl(node);
+		$$ = cdecl_create_node();
+		$$->type = NODE_DECLARATION;
+		$$->declaration.type = $2;
+		$$->declaration.prev = $3;
+		cdecl($$);
 	} |  {
 	} ;
 
 decl
 	  : IDENT {
-		struct node *node = cdecl_create_node();
-
-		node->type = NODE_IDENTIFIER;
-		node->identifier.name = $1;
-		$$ = node;
+		$$ = cdecl_create_node();
+		$$->type = NODE_IDENTIFIER;
+		$$->identifier.name = $1;
 	} | ptr {
 		$$ = $1;
 	} | arr {
@@ -58,11 +56,9 @@ decl
 
 ptr
 	  : '*' decl {
-		struct node *node = cdecl_create_node();
-
-		node->type = NODE_POINTER;
-		node->pointer.prev = $2;
-		$$ = node;
+		$$ = cdecl_create_node();
+		$$->type = NODE_POINTER;
+		$$->pointer.prev = $2;
 	} ;
 
 size
@@ -75,21 +71,17 @@ size
 
 arr
 	  : decl '[' size ']' {
-		struct node *node = cdecl_create_node();
-
-		node->type = NODE_ARRAY;
-		node->array.prev = $1;
-		node->array.size = $3;
-		$$ = node;
+		$$ = cdecl_create_node();
+		$$->type = NODE_ARRAY;
+		$$->array.prev = $1;
+		$$->array.size = $3;
 	} ;
 
 func
 	  : decl '(' ')' {
-		struct node *node = cdecl_create_node();
-
-		node->type = NODE_FUNCTION;
-		node->function.prev = $1;
-		$$ = node;
+		$$ = cdecl_create_node();
+		$$->type = NODE_FUNCTION;
+		$$->function.prev = $1;
 	} ;
 
 %%
