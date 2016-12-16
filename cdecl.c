@@ -11,6 +11,7 @@ struct node *cdecl_create_node(void)
 		fprintf(stderr, "failed to allocate node\n");
 		exit(1);
 	}
+	return ret;
 }
 
 void cdecl(struct node *node)

@@ -3,3 +3,4 @@ cdecl
 *.output
 *.tab.*
 *.yy.c
+*.o

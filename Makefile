@@ -1,5 +1,7 @@
 TARGET := cdecl
 
+cdecl.o_CFLAGS := -Wall -Werror
+
 all: $(TARGET)
 
 # disable implicit rules
@@ -11,7 +13,10 @@ all: $(TARGET)
 %.yy.c: %.l
 	flex -o $@ $<
 
-$(TARGET): $(TARGET).c $(TARGET).tab.c $(TARGET).yy.c
+%.o: %.c
+	$(CC) -c -o $@ $($@_CFLAGS) $<
+
+$(TARGET): $(TARGET).o $(TARGET).tab.o $(TARGET).yy.o
 	$(CC) -o $@ $^
 
 clean:
